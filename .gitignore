@@ -1,0 +1,7 @@
+node_modules
+*.tmp.*
+.sass-cache
+.idea
+logs
+*.log
+npm-debug.log*

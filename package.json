@@ -1,0 +1,31 @@
+{
+  "name": "proyecto",
+  "version": "1.0.0",
+  "description": "Proyecto Responsive Design",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexballera/platzi-responsive.git"
+  },
+  "keywords": [
+    "responsive",
+    "design"
+  ],
+  "author": "Alex Ballera",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexballera/platzi-responsive/issues"
+  },
+  "homepage": "https://github.com/alexballera/platzi-responsive#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.1.0",
+    "gulp-webserver": "^0.9.1"
+  }
+}
