@@ -6,10 +6,13 @@ var sass			= require('gulp-sass');
 var autoprefixer	= require('gulp-autoprefixer');
 var minifycss		= require('gulp-minify-css');
 var rename 		= require('gulp-rename');
+var uncss			= require('gulp-uncss');
 var	inject			= require('gulp-inject');
 var jshint			= require('gulp-jshint');
 var uglify			= require('gulp-uglify');
 var concat			= require('gulp-concat');
+var imagemin		= require('gulp-imagemin');
+var pngquant		= require('imagemin-pngquant');
 
 //Servidor - Browsersync
 gulp.task('serve', function () {
@@ -45,10 +48,15 @@ var config = {
 		main: './src/scripts/main.js',
 		watch: './src/scripts/**/*.js',
 		output: './app/js'
+	},
+	images: {
+		main: './src/images/**',
+		watch: './src/images/**/*',
+		output: './app/images'
 	}
 };
 
-// HTML
+// HTML minificado
 gulp.task('build:html', function() {
 	var opts = {
 		conditionals: true,
@@ -59,17 +67,20 @@ gulp.task('build:html', function() {
 	.pipe(gulp.dest(config.html.output));
 });
 
-//Styles
+//Styles - Optimizado con uncss y minificado
 gulp.task('build:css', function(){
 	gulp.src(config.styles.main)
 	.pipe(sass().on('error', sass.logError))
 	.pipe(autoprefixer('last 2 version'))
 	.pipe(rename({ suffix: '.min' }))
 	.pipe(minifycss())
+	.pipe(uncss({
+		html: config.html.main
+	}))
 	.pipe(gulp.dest(config.styles.output))
 });
 
-// Scripts
+// Scripts: todos los archivos JS concatenados en uno solo minificado
 gulp.task('build:js', function() {
 	return gulp.src(config.scripts.main)
 	.pipe(jshint('.jshintrc'))
@@ -78,6 +89,18 @@ gulp.task('build:js', function() {
 	.pipe(rename({ suffix: '.min' }))
 	.pipe(uglify())
 	.pipe(gulp.dest(config.scripts.output));
+});
+
+// Images
+gulp.task('build:images', function() {
+	return gulp.src(config.images.main)
+	.pipe(imagemin({
+		optimizationLevel: 3,
+		progressive: true,
+		interlaced: true,
+		use: [pngquant()]
+	}))
+	.pipe(gulp.dest(config.images.output));
 });
 
 // Inyectando css y js al index.html
@@ -93,6 +116,7 @@ gulp.task('inject', function () {
 
 
 
+
 //Watch
 gulp.task('watch', function(){
 	gulp.watch(config.html.watch, ['build']);
@@ -101,10 +125,11 @@ gulp.task('watch', function(){
 	gulp.watch(config.styles.watch).on('change', reload);
 	gulp.watch(config.scripts.watch, ['build:js']);
 	gulp.watch(config.scripts.watch).on('change', reload);
+	gulp.watch(config.images.watch, ['build:images']);
 });
 
 //Build
-gulp.task('build', ['build:html', 'build:css', 'build:js', 'inject']);
+gulp.task('build', ['build:html', 'build:css', 'build:js', 'build:images', 'inject']);
 
 //Default
 gulp.task('default', ['serve', 'watch', 'build']);
