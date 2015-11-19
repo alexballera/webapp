@@ -1,50 +1,67 @@
-var gulp		= require('gulp');
-var webserver	= require('gulp-webserver');
-var sass		= require('gulp-sass');
-var autoprefixer = require('gulp-autoprefixer');
-var minifycss 	= require('gulp-minify-css');
-var rename 	= require('gulp-rename');
-
-//Servidor
-gulp.task('server', function(){
-	gulp.src('./build')
-	.pipe(webserver({
-		host: '0.0.0.0',
-		port: 8080,
-		livereload: true
-	}));
-});
+var gulp			= require('gulp'),
+	browserSync	= require('browser-sync'),
+	reload			= browserSync.reload,
+	sass			= require('gulp-sass'),
+	autoprefixer	= require('gulp-autoprefixer'),
+	minifycss 		= require('gulp-minify-css'),
+	// install			= require('gulp-install'),
+	rename 		= require('gulp-rename');
 
 //Variables
-var globs = {
+var config = {
 	styles: {
-		main: './src/scss/main.scss',
+		main: './src/scss/style.scss',
 		watch: './src/scss/**/*.scss',
-		output: './build/css'
+		output: './app/css'
 	},
 	html: {
-		watch: './src/*.html'
+		watch: './app/*.html'
 	}
-}
+};
+
+//Servidor - Browsersync
+gulp.task('serve', function () {
+	'use strict';
+	browserSync({
+		notify: false,
+		logPrefix: 'BS',
+		server: {
+			baseDir:  ['app', 'dist']
+		},
+		host: '0.0.0.0',
+		port: 8080,
+		ui: {
+			port: 8081
+		},
+		browser: ["google-chrome", "firefox"]
+	});
+});
 
 //Styles
 gulp.task('build:css', function(){
-	gulp.src(globs.styles.main)
+	gulp.src(config.styles.main)
 	.pipe(sass().on('error', sass.logError))
 	.pipe(autoprefixer('last 2 version'))
 	.pipe(rename({ suffix: '.min' }))
 	.pipe(minifycss())
-	.pipe(gulp.dest(globs.styles.output));
-	});
+	.pipe(gulp.dest(config.styles.output))
+});
+// gulp.task('install', function(){
+// 	gulp.src('./package.json')
+// 	.pipe(install());
+// });
+
 
 //Watch
 gulp.task('watch', function(){
-	gulp.watch(globs.styles.watch, ['build:css']);
-	gulp.watch(globs.html.watch, ['build']);
+	gulp.watch(config.styles.watch, ['build:css']);
+	gulp.watch(config.html.watch, ['build']);
+	gulp.watch(config.styles.watch).on('change', reload);
+	gulp.watch(config.html.watch).on('change', reload);
 });
 
 //Build
 gulp.task('build', ['build:css']);
 
 //Default
-gulp.task('default', ['server', 'watch', 'build']);
+gulp.task('default', ['serve', 'watch', 'build']);
