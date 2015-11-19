@@ -1,6 +1,7 @@
 var gulp			= require('gulp');
 var browserSync	= require('browser-sync');
 var reload			= browserSync.reload;
+var minifyHTML    = require('gulp-minify-html');
 var sass			= require('gulp-sass');
 var autoprefixer	= require('gulp-autoprefixer');
 var minifycss		= require('gulp-minify-css');
@@ -31,7 +32,9 @@ gulp.task('serve', function () {
 //Variables
 var config = {
 	html: {
-		watch: './app/*.html'
+		main: './src/index.html',
+		watch: './src/**/*.html',
+		output: './app'
 	},
 	styles: {
 		main: './src/styles/scss/style.scss',
@@ -44,6 +47,17 @@ var config = {
 		output: './app/js'
 	}
 };
+
+// HTML
+gulp.task('build:html', function() {
+	var opts = {
+		conditionals: true,
+		spare:true
+	};
+	return gulp.src(config.html.main)
+	.pipe(minifyHTML(opts))
+	.pipe(gulp.dest(config.html.output));
+});
 
 //Styles
 gulp.task('build:css', function(){
@@ -90,7 +104,7 @@ gulp.task('watch', function(){
 });
 
 //Build
-gulp.task('build', ['build:css', 'build:js', 'inject']);
+gulp.task('build', ['build:html', 'build:css', 'build:js', 'inject']);
 
 //Default
 gulp.task('default', ['serve', 'watch', 'build']);
