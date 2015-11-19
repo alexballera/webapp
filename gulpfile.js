@@ -1,23 +1,14 @@
-var gulp			= require('gulp'),
-	browserSync	= require('browser-sync'),
-	reload			= browserSync.reload,
-	sass			= require('gulp-sass'),
-	autoprefixer	= require('gulp-autoprefixer'),
-	minifycss 		= require('gulp-minify-css'),
-	rename 		= require('gulp-rename'),
-	inject			= require('gulp-inject');
-
-//Variables
-var config = {
-	styles: {
-		main: './src/styles/scss/style.scss',
-		watch: './src/styles/scss/**/*.scss',
-		output: './app/css'
-	},
-	html: {
-		watch: './app/*.html'
-	}
-};
+var gulp			= require('gulp');
+var browserSync	= require('browser-sync');
+var reload			= browserSync.reload;
+var sass			= require('gulp-sass');
+var autoprefixer	= require('gulp-autoprefixer');
+var minifycss		= require('gulp-minify-css');
+var rename 		= require('gulp-rename');
+var	inject			= require('gulp-inject');
+var jshint			= require('gulp-jshint');
+var uglify			= require('gulp-uglify');
+var concat			= require('gulp-concat');
 
 //Servidor - Browsersync
 gulp.task('serve', function () {
@@ -37,6 +28,23 @@ gulp.task('serve', function () {
 	});
 });
 
+//Variables
+var config = {
+	html: {
+		watch: './app/*.html'
+	},
+	styles: {
+		main: './src/styles/scss/style.scss',
+		watch: './src/styles/scss/**/*.scss',
+		output: './app/css'
+	},
+	scripts: {
+		main: './src/scripts/main.js',
+		watch: './src/scripts/**/*.js',
+		output: './app/js'
+	}
+};
+
 //Styles
 gulp.task('build:css', function(){
 	gulp.src(config.styles.main)
@@ -47,10 +55,25 @@ gulp.task('build:css', function(){
 	.pipe(gulp.dest(config.styles.output))
 });
 
+// Scripts
+gulp.task('build:js', function() {
+	return gulp.src(config.scripts.main)
+	.pipe(jshint('.jshintrc'))
+	.pipe(jshint.reporter('default'))
+	.pipe(concat('main.js'))
+	.pipe(rename({ suffix: '.min' }))
+	.pipe(uglify())
+	.pipe(gulp.dest(config.scripts.output));
+});
+
 // Inyectando css y js al index.html
 gulp.task('inject', function () {
 	gulp.src('./app/**/*.html')
-	.pipe(inject(gulp.src(config.styles.output + '**/*.css' , {read: false}), {relative: true}))
+	.pipe(inject(gulp.src(
+	      [config.styles.output + '**/*.css',
+	      config.scripts.output + '**/*.js' ] ,
+	      {read: false}),
+	{relative: true}))
 	.pipe(gulp.dest('./app'));
 });
 
@@ -58,15 +81,16 @@ gulp.task('inject', function () {
 
 //Watch
 gulp.task('watch', function(){
-	gulp.watch(config.styles.watch, ['build:css']);
 	gulp.watch(config.html.watch, ['build']);
-	gulp.watch(config.styles.watch).on('change', reload);
 	gulp.watch(config.html.watch).on('change', reload);
-	gulp.watch('gulpfile.js').on('change', reload);
+	gulp.watch(config.styles.watch, ['build:css']);
+	gulp.watch(config.styles.watch).on('change', reload);
+	gulp.watch(config.scripts.watch, ['build:js']);
+	gulp.watch(config.scripts.watch).on('change', reload);
 });
 
 //Build
-gulp.task('build', ['build:css', 'inject']);
+gulp.task('build', ['build:css', 'build:js', 'inject']);
 
 //Default
 gulp.task('default', ['serve', 'watch', 'build']);
