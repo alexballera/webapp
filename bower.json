@@ -1,0 +1,28 @@
+{
+  "name": "proyecto",
+  "description": "Proyecto Responsive Design",
+  "main": "index.js",
+  "authors": [
+    "Alex Ballera"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "responsive",
+    "design"
+  ],
+  "homepage": "https://github.com/alexballera/platzi-responsive",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ]
+}

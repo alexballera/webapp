@@ -4,14 +4,14 @@ var gulp			= require('gulp'),
 	sass			= require('gulp-sass'),
 	autoprefixer	= require('gulp-autoprefixer'),
 	minifycss 		= require('gulp-minify-css'),
-	// install			= require('gulp-install'),
-	rename 		= require('gulp-rename');
+	rename 		= require('gulp-rename'),
+	inject			= require('gulp-inject');
 
 //Variables
 var config = {
 	styles: {
-		main: './src/scss/style.scss',
-		watch: './src/scss/**/*.scss',
+		main: './src/styles/scss/style.scss',
+		watch: './src/styles/scss/**/*.scss',
 		output: './app/css'
 	},
 	html: {
@@ -46,10 +46,14 @@ gulp.task('build:css', function(){
 	.pipe(minifycss())
 	.pipe(gulp.dest(config.styles.output))
 });
-// gulp.task('install', function(){
-// 	gulp.src('./package.json')
-// 	.pipe(install());
-// });
+
+// Inyectando css y js al index.html
+gulp.task('inject', function () {
+	gulp.src('./app/**/*.html')
+	.pipe(inject(gulp.src(config.styles.output + '**/*.css' , {read: false}), {relative: true}))
+	.pipe(gulp.dest('./app'));
+});
+
 
 
 //Watch
@@ -58,10 +62,11 @@ gulp.task('watch', function(){
 	gulp.watch(config.html.watch, ['build']);
 	gulp.watch(config.styles.watch).on('change', reload);
 	gulp.watch(config.html.watch).on('change', reload);
+	gulp.watch('gulpfile.js').on('change', reload);
 });
 
 //Build
-gulp.task('build', ['build:css']);
+gulp.task('build', ['build:css', 'inject']);
 
 //Default
 gulp.task('default', ['serve', 'watch', 'build']);
