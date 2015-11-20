@@ -1,18 +1,19 @@
 var gulp			= require('gulp');
 var browserSync	= require('browser-sync');
 var reload			= browserSync.reload;
-var minifyHTML    = require('gulp-minify-html');
+var minifyHTML	= require('gulp-minify-html');
 var sass			= require('gulp-sass');
 var autoprefixer	= require('gulp-autoprefixer');
 var minifycss		= require('gulp-minify-css');
 var rename 		= require('gulp-rename');
-var uncss			= require('gulp-uncss');
-var	inject			= require('gulp-inject');
 var jshint			= require('gulp-jshint');
 var uglify			= require('gulp-uglify');
 var concat			= require('gulp-concat');
 var imagemin		= require('gulp-imagemin');
 var pngquant		= require('imagemin-pngquant');
+var	inject			= require('gulp-inject');
+var wiredep		= require('wiredep').stream;
+var cache			= require('gulp-cache');
 
 //Servidor - Browsersync
 gulp.task('serve', function () {
@@ -21,7 +22,7 @@ gulp.task('serve', function () {
 		notify: false,
 		logPrefix: 'BS',
 		server: {
-			baseDir:  ['app', 'dist']
+			baseDir: [ './src', './app']
 		},
 		host: '0.0.0.0',
 		port: 8080,
@@ -42,21 +43,24 @@ var config = {
 	styles: {
 		main: './src/styles/scss/style.scss',
 		watch: './src/styles/scss/**/*.scss',
-		output: './app/css'
+		src: './src/styles',
+		output: './app/styles'
 	},
 	scripts: {
 		main: './src/scripts/main.js',
 		watch: './src/scripts/**/*.js',
-		output: './app/js'
+		src: './src/scripts',
+		output: './app/scripts'
 	},
 	images: {
-		main: './src/images/**',
-		watch: './src/images/**/*',
+		main: './src/images/resources/**',
+		watch: './src/images/resources/**',
+		src: './src/images',
 		output: './app/images'
 	}
 };
 
-// HTML minificado
+//HTML minificado
 gulp.task('build:html', function() {
 	var opts = {
 		conditionals: true,
@@ -67,17 +71,15 @@ gulp.task('build:html', function() {
 	.pipe(gulp.dest(config.html.output));
 });
 
-//Styles - Optimizado con uncss y minificado
+//Styles minificado
 gulp.task('build:css', function(){
 	gulp.src(config.styles.main)
 	.pipe(sass().on('error', sass.logError))
 	.pipe(autoprefixer('last 2 version'))
 	.pipe(rename({ suffix: '.min' }))
 	.pipe(minifycss())
-	.pipe(uncss({
-		html: config.html.main
-	}))
 	.pipe(gulp.dest(config.styles.output))
+	.pipe(gulp.dest(config.styles.src));
 });
 
 // Scripts: todos los archivos JS concatenados en uno solo minificado
@@ -88,48 +90,53 @@ gulp.task('build:js', function() {
 	.pipe(concat('main.js'))
 	.pipe(rename({ suffix: '.min' }))
 	.pipe(uglify())
-	.pipe(gulp.dest(config.scripts.output));
+	.pipe(gulp.dest(config.scripts.output))
+	.pipe(gulp.dest(config.scripts.src));
 });
 
 // Images
 gulp.task('build:images', function() {
 	return gulp.src(config.images.main)
-	.pipe(imagemin({
+	.pipe(cache(imagemin({
 		optimizationLevel: 3,
 		progressive: true,
 		interlaced: true,
 		use: [pngquant()]
-	}))
+	})))
+	.pipe(gulp.dest(config.images.src))
 	.pipe(gulp.dest(config.images.output));
 });
 
 // Inyectando css y js al index.html
 gulp.task('inject', function () {
-	gulp.src('./app/**/*.html')
-	.pipe(inject(gulp.src(
-	      [config.styles.output + '**/*.css',
-	      config.scripts.output + '**/*.js' ] ,
-	      {read: false}),
-	{relative: true}))
-	.pipe(gulp.dest('./app'));
+	gulp.src('./src/index.html')
+	.pipe(inject(gulp.src([config.styles.src + '/*.min.css', config.scripts.src + '**/*.min.js' ], {read: false}), {relative: true}))
+	.pipe(gulp.dest('./src'));
 });
 
-
-
+// Inyectando las librerias Bower
+gulp.task('wiredep', function () {
+	gulp.src('./src/*.html')
+	.pipe(wiredep({
+		directory: './src/bower_components'
+	}))
+	.pipe(gulp.dest('./src'));
+});
 
 //Watch
 gulp.task('watch', function(){
-	gulp.watch(config.html.watch, ['build']);
+	gulp.watch(config.html.watch, ['build:html']);
 	gulp.watch(config.html.watch).on('change', reload);
 	gulp.watch(config.styles.watch, ['build:css']);
 	gulp.watch(config.styles.watch).on('change', reload);
 	gulp.watch(config.scripts.watch, ['build:js']);
 	gulp.watch(config.scripts.watch).on('change', reload);
 	gulp.watch(config.images.watch, ['build:images']);
+	gulp.watch(config.images.watch).on('change', reload);
 });
 
 //Build
-gulp.task('build', ['build:html', 'build:css', 'build:js', 'build:images', 'inject']);
+gulp.task('build', ['build:html', 'build:css', 'build:js', 'build:images', 'inject', 'wiredep']);
 
 //Default
 gulp.task('default', ['serve', 'watch', 'build']);
