@@ -40,9 +40,6 @@
       "main": "css/font-awesome.min.css"
     }
   },
-  "dependencies": {
-    "angular": "~1.4.8",
-    "bootstrap": "~3.3.5"
-  },
+  "dependencies": {},
   "devDependencies": {}
 }

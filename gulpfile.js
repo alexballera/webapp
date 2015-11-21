@@ -118,7 +118,7 @@ gulp.task('inject', function () {
 gulp.task('wiredep', function () {
   gulp.src('./app/*.html')
   .pipe(wiredep({
-    directory: './app/lib'
+    directory: './app/bower_components'
   }))
   .pipe(gulp.dest('./app'));
 });
