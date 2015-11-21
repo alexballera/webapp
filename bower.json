@@ -25,6 +25,24 @@
     "test",
     "tests"
   ],
-  "dependencies": {},
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/js/bootstrap.min.js",
+        "dist/css/bootstrap.min.css",
+        "less/bootstrap.less"
+      ]
+    },
+    "jquery": {
+      "main": "dist/jquery.min.js"
+    },
+    "font-awesome": {
+      "main": "css/font-awesome.min.css"
+    }
+  },
+  "dependencies": {
+    "angular": "~1.4.8",
+    "bootstrap": "~3.3.5"
+  },
   "devDependencies": {}
 }
