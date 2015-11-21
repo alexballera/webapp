@@ -71,11 +71,16 @@ gulp.task('build:html', function() {
   .pipe(gulp.dest(config.html.output));
 });
 
-//Styles minificado
-gulp.task('build:css', function(){
+//Styles
+gulp.task('build:css', ['minify-css'], function(){
   gulp.src(config.styles.main)
   .pipe(sass().on('error', sass.logError))
   .pipe(autoprefixer('last 2 version'))
+  .pipe(gulp.dest(config.styles.app));
+});
+//Styles minificado
+gulp.task('minify-css', function(){
+  gulp.src(config.styles.app + '/style.css')
   .pipe(rename({ suffix: '.min' }))
   .pipe(minifycss())
   .pipe(gulp.dest(config.styles.output))
