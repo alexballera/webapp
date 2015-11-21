@@ -11,9 +11,10 @@ var uglify      = require('gulp-uglify');
 var concat      = require('gulp-concat');
 var imagemin    = require('gulp-imagemin');
 var pngquant    = require('imagemin-pngquant');
-var inject      = require('gulp-inject');
-var wiredep   = require('wiredep').stream;
 var cache     = require('gulp-cache');
+var inject              = require('gulp-inject');
+var wiredep = require('wiredep').stream;
+var install              = require("gulp-install");
 
 //Servidor - Browsersync
 gulp.task('serve', function () {
@@ -114,17 +115,23 @@ gulp.task('inject', function () {
 });
 
 // Inyectando las librerias Bower
-gulp.task('wiredep',  function () {
+gulp.task('wiredep', function () {
   gulp.src('./app/*.html')
   .pipe(wiredep({
-    directory: './app/bower_components'
-    }))
+    directory: './app/lib'
+  }))
   .pipe(gulp.dest('./app'));
+});
+
+//Install
+gulp.task('install', function(){
+  gulp.src(['./bower.json', './package.json'])
+  .pipe(install());
 });
 
 //Watch
 gulp.task('watch', function(){
-  gulp.watch(config.html.watch, ['build:html']);
+  gulp.watch(config.html.watch, ['build']);
   gulp.watch(config.html.watch).on('change', reload);
   gulp.watch(config.styles.watch, ['build:css']);
   gulp.watch(config.styles.watch).on('change', reload);
@@ -132,10 +139,15 @@ gulp.task('watch', function(){
   gulp.watch(config.scripts.watch).on('change', reload);
   gulp.watch(config.images.watch, ['build:images']);
   gulp.watch(config.images.watch).on('change', reload);
+  gulp.watch(['./bower.json'], ['wiredep']);
+  gulp.watch('./bower.json').on('change', reload);
 });
 
+//Install
+gulp.task('update', ['install', 'build']);
+
 //Build
-gulp.task('build', ['build:html', 'build:css', 'build:js', 'inject', 'build:images', 'wiredep']);
+gulp.task('build', ['build:html', 'build:css', 'build:js', 'build:images', 'inject', 'wiredep']);
 
 //Default
 gulp.task('default', ['serve', 'watch', 'build']);
