@@ -1,0 +1,1 @@
+alert('este es el archivo main.js 2');

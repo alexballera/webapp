@@ -1,0 +1,1 @@
+alert('documento prueba.js 2');
