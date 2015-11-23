@@ -1,21 +1,22 @@
-var gulp      = require('gulp');
+var gulp              = require('gulp');
 var browserSync = require('browser-sync');
-var reload      = browserSync.reload;
-var minifyHTML  = require('gulp-minify-html');
-var sass      = require('gulp-sass');
+var reload           = browserSync.reload;
+var minifyHTML   = require('gulp-minify-html');
+var sass              = require('gulp-sass');
 var autoprefixer  = require('gulp-autoprefixer');
-var minifycss   = require('gulp-minify-css');
-var rename    = require('gulp-rename');
-var jshint      = require('gulp-jshint');
-var uglify      = require('gulp-uglify');
-var concat      = require('gulp-concat');
-var imagemin    = require('gulp-imagemin');
-var pngquant    = require('imagemin-pngquant');
-var cache     = require('gulp-cache');
-var inject              = require('gulp-inject');
-var wiredep = require('wiredep').stream;
+var minifycss      = require('gulp-minify-css');
+var rename         = require('gulp-rename');
+var uncss            = require('gulp-uncss');
+var jshint             = require('gulp-jshint');
+var uglify             = require('gulp-uglify');
+var concat            = require('gulp-concat');
+var imagemin       = require('gulp-imagemin');
+var pngquant        = require('imagemin-pngquant');
+var cache              = require('gulp-cache');
+var del               = require('del');
+var inject               = require('gulp-inject');
+var wiredep           = require('wiredep').stream;
 var install              = require("gulp-install");
-var uncss = require('gulp-uncss');
 
 //Servidor - Browsersync
 gulp.task('serve', function () {
@@ -23,7 +24,7 @@ gulp.task('serve', function () {
     notify: false,
     logPrefix: 'BS',
     server: {
-      baseDir: [ './app']
+      baseDir: [ './dist', './app']
     },
     host: '0.0.0.0',
     port: 8080,
@@ -55,14 +56,14 @@ var config = {
   },
   images: {
     main: './app/images/resources/**',
-    watch: './app/images/resources/**',
+    watch: './app/images/**/*.*',
     app: './app/images',
     output: './dist/images'
   }
 };
 
 //HTML minificado
-gulp.task('build:html', function() {
+gulp.task('html', function() {
   var opts = {
     conditionals: true,
     spare:true
@@ -73,8 +74,11 @@ gulp.task('build:html', function() {
 });
 
 //Styles: CSS  Minificado
-gulp.task('build:css', ['uncss'], function(){
-  gulp.src(config.styles.main)
+gulp.task('styles', ['build:styles'], function() {
+    gulp.start('uncss');
+});
+gulp.task('build:styles', function(){
+  return gulp.src(config.styles.main)
   .pipe(sass().on('error', sass.logError))
   .pipe(autoprefixer('last 2 version'))
   .pipe(gulp.dest(config.styles.app))
@@ -94,7 +98,7 @@ gulp.task('uncss', function() {
 });
 
 // Scripts: todos los archivos JS concatenados en uno solo minificado
-gulp.task('build:js', function() {
+gulp.task('scripts', function() {
   return gulp.src([config.scripts.app+'/js/*.js', config.scripts.app+'/vendors/*.js'])
   .pipe(jshint('.jshintrc'))
   .pipe(jshint.reporter('default'))
@@ -106,7 +110,10 @@ gulp.task('build:js', function() {
 });
 
 // Images
-gulp.task('build:images', function() {
+gulp.task('images', ['build:images'], function() {
+    gulp.start('clean:images');
+});
+gulp.task('build:images', ['copy:images'], function() {
   return gulp.src(config.images.main)
   .pipe(cache(imagemin({
     optimizationLevel: 3,
@@ -116,6 +123,13 @@ gulp.task('build:images', function() {
   })))
   .pipe(gulp.dest(config.images.app))
   .pipe(gulp.dest(config.images.output));
+});
+gulp.task('copy:images', function() {
+  return gulp.src(config.images.app + '/*.*')
+  .pipe(gulp.dest(config.images.output));
+});
+gulp.task('clean:images', function(cb) {
+    del(config.images.main + '/*.*', cb);
 });
 
 // Inyectando css y js al index.html
@@ -134,31 +148,46 @@ gulp.task('wiredep', function () {
   .pipe(gulp.dest('./app'));
 });
 
+// Clean
+gulp.task('clean', function(cb) {
+    return del(['./dist/**/.*.html', './dist/bower_components/**', config.styles.output, config.scripts.output, config.images.output], cb);
+});
+
 //Install
 gulp.task('install', function(){
   gulp.src(['./bower.json', './package.json'])
   .pipe(install());
 });
 
+//Copy
+gulp.task('copy', function () {
+  return gulp.src(['./app/bower_components/**'])
+  .pipe(gulp.dest('./dist/bower_components'));
+});
+
 //Watch
 gulp.task('watch', function(){
   gulp.watch(config.html.watch, ['build']);
   gulp.watch(config.html.watch).on('change', reload);
-  gulp.watch(config.styles.watch, ['build:css']);
+  gulp.watch(config.styles.watch, ['styles']);
   gulp.watch(config.styles.watch).on('change', reload);
-  gulp.watch(config.scripts.watch, ['build:js']);
+  gulp.watch(config.scripts.watch, ['scripts']);
   gulp.watch(config.scripts.watch).on('change', reload);
-  gulp.watch(config.images.watch, ['build:images']);
+  gulp.watch(config.images.watch, ['images']);
   gulp.watch(config.images.watch).on('change', reload);
-  gulp.watch(['./bower.json'], ['wiredep']);
+  gulp.watch(['./bower.json'], ['wiredep', 'copy']);
   gulp.watch('./bower.json').on('change', reload);
 });
 
 //Install
-gulp.task('update', ['install', 'build']);
+gulp.task('update', ['install'], function(){
+  gulp.start('build');
+});
 
 //Build
-gulp.task('build', ['build:html', 'build:css', 'build:js', 'build:images', 'inject', 'wiredep']);
+gulp.task('build', ['html', 'styles', 'scripts', 'images', 'inject', 'wiredep', 'copy']);
 
 //Default
-gulp.task('default', ['serve', 'watch', 'build']);
+gulp.task('default', ['clean'], function() {
+  gulp.start('serve', 'watch', 'build');
+});
