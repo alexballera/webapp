@@ -13,7 +13,7 @@ body {
 h1 {
   font-size: 2em;
   margin: .67em 0;
-  color: red;
+  color: #00f;
 }
 
 button::-moz-focus-inner,

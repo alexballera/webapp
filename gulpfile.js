@@ -24,7 +24,7 @@ gulp.task('serve', function () {
     notify: false,
     logPrefix: 'BS',
     server: {
-      baseDir: [ './dist', './app']
+      baseDir: [ './app', './dist']
     },
     host: '0.0.0.0',
     port: 8080,
@@ -99,7 +99,7 @@ gulp.task('uncss', function() {
 
 // Scripts: todos los archivos JS concatenados en uno solo minificado
 gulp.task('scripts', function() {
-  return gulp.src([config.scripts.app+'/js/*.js', config.scripts.app+'/vendors/*.js'])
+  return gulp.src([config.scripts.app+'/js/*.js'])
   .pipe(jshint('.jshintrc'))
   .pipe(jshint.reporter('default'))
   .pipe(concat('main.js'))
@@ -135,7 +135,7 @@ gulp.task('clean:images', function(cb) {
 // Inyectando css y js al index.html
 gulp.task('inject', function () {
   gulp.src('./app/*.html')
-  .pipe(inject(gulp.src(['./app/styles/style.min.css', './app/scripts/main.min.js'], {read: false}), {relative: true}))
+  .pipe(inject(gulp.src(['./app/styles/style.min.css', config.scripts.app+'/vendors/*.js', './app/scripts/main.min.js'], {read: false}), {relative: true}))
   .pipe(gulp.dest('./app'));
 });
 
@@ -161,8 +161,10 @@ gulp.task('install', function(){
 
 //Copy
 gulp.task('copy', function () {
-  return gulp.src(['./app/bower_components/**'])
+  gulp.src(['./app/bower_components/**'])
   .pipe(gulp.dest('./dist/bower_components'));
+  gulp.src([config.scripts.app + '/vendors/**.*.js'])
+  .pipe(gulp.dest(config.scripts.output + '/vendors/'));
 });
 
 //Watch
