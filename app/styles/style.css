@@ -2,4 +2,5 @@
 @import url(vendors/gridlex.min.css);
 .caja {
   background: peru;
-  border: 1px solid maroon; }
+  border: 1px solid maroon;
+  color: white; }

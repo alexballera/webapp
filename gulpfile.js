@@ -169,16 +169,11 @@ gulp.task('copy', function () {
 
 //Watch
 gulp.task('watch', function(){
-  gulp.watch(config.html.watch, ['build']);
-  gulp.watch(config.html.watch).on('change', reload);
-  gulp.watch(config.styles.watch, ['styles']);
-  gulp.watch(config.styles.watch).on('change', reload);
-  gulp.watch(config.scripts.watch, ['scripts']);
-  gulp.watch(config.scripts.watch).on('change', reload);
-  gulp.watch(config.images.watch, ['images']);
-  gulp.watch(config.images.watch).on('change', reload);
-  gulp.watch(['./bower.json'], ['wiredep', 'copy']);
-  gulp.watch('./bower.json').on('change', reload);
+  gulp.watch(config.html.watch, ['build'], reload);
+  gulp.watch(config.styles.watch, ['styles'], reload);
+  gulp.watch(config.scripts.watch, ['scripts'], reload);
+  gulp.watch(config.images.watch, ['images'], reload);
+  gulp.watch(['./bower.json'], ['wiredep', 'copy'], reload);
 });
 
 //Install

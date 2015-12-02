@@ -60,4 +60,5 @@ input::-moz-focus-inner {
 .caja {
   background: peru;
   border: 1px solid maroon;
+  color: #fff;
 }
