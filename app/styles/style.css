@@ -1,4 +1,5 @@
 @import url(vendors/normalize.css);
-@import url(vendors/flexboxgrid.min.css);
-h1 {
-  color: blue; }
+@import url(vendors/gridlex.min.css);
+.caja {
+  background: peru;
+  border: 1px solid maroon; }

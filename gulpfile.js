@@ -182,7 +182,7 @@ gulp.task('watch', function(){
 });
 
 //Install
-gulp.task('update', ['install'], function(){
+gulp.task('server', ['install'], function(){
   gulp.start('build');
 });
 
@@ -191,5 +191,5 @@ gulp.task('build', ['html', 'styles', 'scripts', 'images', 'inject', 'wiredep', 
 
 //Default
 gulp.task('default', ['clean'], function() {
-  gulp.start('serve', 'watch', 'build');
+  gulp.start('serve', 'watch', 'server');
 });
