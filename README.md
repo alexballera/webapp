@@ -160,7 +160,6 @@ gulp.watch(config.scripts.watch, ['scripts'], reload);
 [imagemin-pngquant](https://www.npmjs.com/package/imagemin-pngquant)  
 [gulp-cache](https://github.com/jgable/gulp-cache)  
 [del](https://www.npmjs.com/package/del)  
-```
 **Tasks**
 ```javascript
 // Images
