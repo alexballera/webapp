@@ -5,7 +5,7 @@ var minifyHTML	= require('gulp-minify-html');
 var sass			= require('gulp-sass');
 var autoprefixer	= require('gulp-autoprefixer');
 var minifycss		= require('gulp-minify-css');
-var rename		= require('gulp-rename');
+var rename			= require('gulp-rename');
 var uncss			= require('gulp-uncss');
 var jshint			= require('gulp-jshint');
 var uglify			= require('gulp-uglify');
@@ -31,7 +31,7 @@ gulp.task('serve', function () {
 		ui: {
 			port: 8081
 		},
-		browser: ["google-chrome", "firefox"]
+		browser: ["chromium-browser", "firefox"]
 	});
 });
 
@@ -43,7 +43,7 @@ var config = {
 		output: './dist'
 	},
 	styles: {
-		main: './app/styles/scss/style.scss',
+		main: './app/styles/scss/main.scss',
 		watch: './app/styles/scss/**/*.scss',
 		app: './app/styles',
 		output: './dist/styles'
@@ -134,7 +134,7 @@ gulp.task('clean:images', function(cb) {
 // Inyectando css y js al index.html
 gulp.task('inject', function () {
 	gulp.src('./app/*.html')
-	.pipe(inject(gulp.src(['./app/styles/style.min.css', config.scripts.app+'/vendors/*.js', './app/scripts/main.min.js'], {read: false}), {relative: true}))
+	.pipe(inject(gulp.src([config.styles.app+'/vendors/*.css', './app/styles/style.min.css', config.scripts.app+'/vendors/*.js', './app/scripts/main.min.js'], {read: false}), {relative: true}))
 	.pipe(gulp.dest('./app'));
 });
 
@@ -162,17 +162,19 @@ gulp.task('install', function(){
 gulp.task('copy', function () {
 	gulp.src(['./app/bower_components/**'])
 	.pipe(gulp.dest('./dist/bower_components'));
-	gulp.src([config.scripts.app + '/vendors/**.*.js'])
+	gulp.src([config.scripts.app + '/vendors/*.js'])
 	.pipe(gulp.dest(config.scripts.output + '/vendors/'));
+	gulp.src([config.styles.app + '/vendors/*.css'])
+	.pipe(gulp.dest(config.styles.output + '/vendors/'));
 });
 
 //Watch
 gulp.task('watch', function(){
-	gulp.watch(config.html.watch, ['build'], reload);
-	gulp.watch(config.styles.watch, ['styles'], reload);
-	gulp.watch(config.scripts.watch, ['scripts'], reload);
-	gulp.watch(config.images.watch, ['images'], reload);
-	gulp.watch(['./bower.json'], ['wiredep', 'copy'], reload);
+	gulp.watch(config.html.watch, ['build']).on('change', reload);
+	gulp.watch(config.styles.watch, ['styles']).on('change', reload);
+	gulp.watch(config.scripts.watch, ['scripts']).on('change', reload);
+	gulp.watch(config.images.watch, ['images']).on('change', reload);
+	gulp.watch(['./bower.json'], ['wiredep', 'copy']).on('change', reload);
 });
 
 //Install

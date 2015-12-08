@@ -1,0 +1,86 @@
+@import '../variables/var';
+@include respond-to(sm) {
+  .container {
+    width: ($screen-sm+1em);
+  }
+  .col-sm,
+  .col-sm-1,
+  .col-sm-2,
+  .col-sm-3,
+  .col-sm-4,
+  .col-sm-5,
+  .col-sm-6,
+  .col-sm-7,
+  .col-sm-8,
+  .col-sm-9,
+  .col-sm-10,
+  .col-sm-11,
+  .col-sm-12,
+  .col-sm-offset-1,
+  .col-sm-offset-2,
+  .col-sm-offset-3,
+  .col-sm-offset-4,
+  .col-sm-offset-5,
+  .col-sm-offset-6,
+  .col-sm-offset-7,
+  .col-sm-offset-8,
+  .col-sm-offset-9,
+  .col-sm-offset-10,
+  .col-sm-offset-11{
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    padding: 0 $gutter-width;
+  }
+  .col-sm{
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+  }
+  
+  @include columns-sm;
+
+  @include offset-sm;
+
+  .start-sm{
+     justify-content: flex-start;
+    text-align: start;
+  }
+
+  .center-sm{
+    justify-content: center;
+    text-align: center;
+  }
+
+  .end-sm{
+    justify-content: flex-end;
+    text-align: end;
+  }
+
+  .top-sm{
+    align-items: flex-start;
+  }
+
+  .middle-sm{
+    align-items: center;
+  }
+
+  .bottom-sm{
+    align-items: flex-end;
+  }
+
+  .around-sm{
+    justify-content: space-around;
+  }
+
+  .between-sm{
+    justify-content: space-between;
+  }
+
+  .first-sm{
+    order: -1;
+  }
+
+  .last-sm{
+    order: 1;
+  }
+}

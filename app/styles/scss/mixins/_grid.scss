@@ -1,0 +1,97 @@
+@import '../variables/var';
+//Grid System
+@mixin columns {
+  @for $i from 1 through $columns {
+    .col-#{$i} {
+      max-width: ($container-fluid / $columns) * $i;
+      flex-basis: ($container-fluid / $columns) * $i;
+    }
+  }
+}
+@mixin offset {
+  @for $i from 1 through ($columns )-1{
+    .col-offset-#{$i} {
+      margin-left: ($container-fluid / $columns) * $i;
+    }
+  }
+}
+
+@mixin columns-xs {
+  @for $i from 1 through $columns {
+    .col-xs-#{$i} {
+      max-width: ($container-fluid / $columns) * $i;
+      flex-basis: ($container-fluid / $columns) * $i;
+    }
+  }
+}
+@mixin offset-xs {
+  @for $i from 1 through ($columns )-1{
+    .col-xs-offset-#{$i} {
+      margin-left: ($container-fluid / $columns) * $i;
+    }
+  }
+}
+
+@mixin columns-sm {
+  @for $i from 1 through $columns {
+    .col-sm-#{$i} {
+      max-width: ($container-fluid / $columns) * $i;
+      flex-basis: ($container-fluid / $columns) * $i;
+    }
+  }
+}
+@mixin offset-sm {
+  @for $i from 1 through ($columns )-1{
+    .col-sm-offset-#{$i} {
+      margin-left: ($container-fluid / $columns) * $i;
+    }
+  }
+}
+
+@mixin columns-md {
+  @for $i from 1 through $columns {
+    .col-md-#{$i} {
+      max-width: ($container-fluid / $columns) * $i;
+      flex-basis: ($container-fluid / $columns) * $i;
+    }
+  }
+}
+@mixin offset-md {
+  @for $i from 1 through ($columns )-1{
+    .col-md-offset-#{$i} {
+      margin-left: ($container-fluid / $columns) * $i;
+    }
+  }
+}
+
+@mixin columns-lg {
+  @for $i from 1 through $columns {
+    .col-lg-#{$i} {
+      max-width: ($container-fluid / $columns) * $i;
+      flex-basis: ($container-fluid / $columns) * $i;
+    }
+  }
+}
+@mixin offset-lg {
+  @for $i from 1 through ($columns )-1{
+    .col-lg-offset-#{$i} {
+      margin-left: ($container-fluid / $columns) * $i;
+    }
+  }
+}
+
+@mixin columns-xl {
+  @for $i from 1 through $columns {
+    .col-xl-#{$i} {
+      max-width: ($container-fluid / $columns) * $i;
+      flex-basis: ($container-fluid / $columns) * $i;
+    }
+  }
+}
+@mixin offset-xl {
+  @for $i from 1 through ($columns )-1{
+    .col-xl-offset-#{$i} {
+      margin-left: ($container-fluid / $columns) * $i;
+    }
+  }
+}
