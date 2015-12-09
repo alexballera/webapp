@@ -43,7 +43,7 @@ var config = {
 		output: './dist'
 	},
 	styles: {
-		main: './app/styles/scss/main.scss',
+		main: './app/styles/scss/style.scss',
 		watch: './app/styles/scss/**/*.scss',
 		app: './app/styles',
 		output: './dist/styles'
@@ -88,7 +88,7 @@ gulp.task('build:styles', function(){
 });
 // Optimiza styles.min.css
 gulp.task('uncss', function() {
-	return gulp.src(config.styles.app + '/style.min.css')
+	return gulp.src(config.styles.app + '/**.min.css')
 	.pipe(uncss({
 		html: ['index.html', 'app/**/*.html']
 		}))

@@ -1,7 +1,8 @@
-@import '../variables/var';
-@import '../mixins/breakpoints';
+@import 'variables/var';
+@import 'mixins/breakpoints';
 
-.container, .container-fluid{
+.container,
+.container-fluid{
   margin-right: auto;
   margin-left: auto;
 }
@@ -29,14 +30,14 @@
   flex-direction: column-reverse;
 }
 
-@import 'col';
+@import 'grid/col';
 
-@import 'xs';
+@import 'grid/xs';
 
-@import 'sm';
+@import 'grid/sm';
 
-@import 'md';
+@import 'grid/md';
 
-@import 'lg';
+@import 'grid/lg';
 
-@import 'xl';
+@import 'grid/xl';

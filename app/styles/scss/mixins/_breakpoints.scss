@@ -1,6 +1,5 @@
 @import '../variables/var';
 
-//Mixins
 @mixin respond-to($media) {
   @if $media == xs {
     @media only screen and (max-width: $screen-xs) { @content; }
