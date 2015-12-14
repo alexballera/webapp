@@ -31,7 +31,7 @@ gulp.task('serve', function () {
 		ui: {
 			port: 8081
 		},
-		browser: ["chromium-browser", "firefox"]
+		browser: ["google-chrome", "firefox"]
 	});
 });
 
@@ -149,7 +149,7 @@ gulp.task('wiredep', function () {
 
 // Clean
 gulp.task('clean', function(cb) {
-		return del(['./dist/**/.*.html', './dist/bower_components/**', config.styles.output, config.scripts.output, config.images.output], cb);
+	return del(['./dist/**/.*.html', './dist/bower_components/**', config.styles.output, config.scripts.output, config.images.output], cb);
 });
 
 //Install
