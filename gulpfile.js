@@ -168,13 +168,21 @@ gulp.task('copy', function () {
 	.pipe(gulp.dest(config.styles.output + '/vendors/'));
 });
 
+//Reload
+gulp.watch([
+	config.html.watch, 
+	config.styles.watch, 
+	config.scripts.watch, 
+	'./bower.json'
+]).on('change', reload);
+
 //Watch
 gulp.task('watch', function(){
-	gulp.watch(config.html.watch, ['build']).on('change', reload);
-	gulp.watch(config.styles.watch, ['styles']).on('change', reload);
-	gulp.watch(config.scripts.watch, ['scripts']).on('change', reload);
-	gulp.watch(config.images.watch, ['images']).on('change', reload);
-	gulp.watch(['./bower.json'], ['wiredep', 'copy']).on('change', reload);
+	gulp.watch(config.html.watch, ['build']);
+	gulp.watch(config.styles.watch, ['styles']);
+	gulp.watch(config.scripts.watch, ['scripts']);
+	gulp.watch(config.images.watch, ['images']);
+	gulp.watch(['./bower.json'], ['wiredep', 'copy']);
 });
 
 //Install
