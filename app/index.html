@@ -15,8 +15,19 @@
         <link rel="stylesheet" href="styles/vendors/normalize.css">
         <link rel="stylesheet" href="styles/style.min.css">
         <!-- endinject -->
+        <!--[if (gte IE 6)&(lte IE 8)]>
+          <script type="text/javascript" src="scripts/vendors/selectivizr.js"></script>
+          <noscript><link rel="stylesheet" href="[fallback css]" /></noscript>
+        <![endif]-->
     </head>
     <body>
+        <!--[if lt  IE  8]>
+          <p  class="browsehappy">
+            Estás usando  un  navegador <strong>desactualizado</strong>.
+            Por favor <a  href="http://browsehappy.com/">actualiza  tu  navegador</a>
+            Para  mejorar la  experiencia..
+          </p>
+        <![endif]-->
 
         <!-- bower:js -->
         <!-- endbower -->
