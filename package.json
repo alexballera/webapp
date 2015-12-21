@@ -22,6 +22,7 @@
   "homepage": "https://github.com/alexballera/platzi-responsive#readme",
   "devDependencies": {
     "browser-sync": "^2.10.0",
+    "browserify": "^12.0.1",
     "del": "^2.1.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
@@ -38,7 +39,18 @@
     "gulp-uglify": "^1.5.1",
     "gulp-uncss": "^1.0.4",
     "imagemin-pngquant": "^4.2.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
     "wiredep": "^2.2.2"
   },
+  "scripts": {
+    "test": "standard && node my-tests.js"
+  },
+  "standard": {
+    "ignore": [
+        "**/vendors/**",
+        "tmp.js"
+        ]
+    },
   "dependencies": {}
 }

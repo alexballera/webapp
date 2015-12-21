@@ -1,0 +1,136 @@
+a,
+body,
+button,
+div,
+header,
+html,
+i,
+li,
+nav,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+header,
+nav {
+  display: block;
+}
+
+body {
+  line-height: 1;
+  font-size: 16px;
+  font-family: lato;
+}
+
+ul {
+  list-style: none;
+}
+
+.header {
+  font-family: Montserrat;
+  background-color: #212121;
+  color: #fefefe;
+  height: 64px;
+  line-height: 64px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  transition: all .3s ease;
+}
+
+@media only screen and (min-width:48em) {
+  .header {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    height: 80px;
+    transition: all .3s ease;
+    line-height: 80px;
+  }
+}
+
+.header__menu--navbar,
+.header__mobile--btn {
+  background-color: #212121;
+}
+
+.header__mobile {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.header__mobile--logo {
+  margin-left: 1em;
+  font-size: 2em;
+  -webkit-order: 1;
+  -ms-flex-order: 1;
+  order: 1;
+}
+
+.header__mobile--btn {
+  border: 0;
+  margin-right: 2em;
+  outline: 0;
+  -webkit-order: 2;
+  -ms-flex-order: 2;
+  order: 2;
+  border-radius: 5px;
+}
+
+.header__menu--list {
+  height: 0;
+  overflow: hidden;
+  list-style-type: none;
+  transition: height .3s ease;
+}
+
+@media only screen and (min-width:48em) {
+  .header__mobile--btn {
+    display: none;
+  }
+
+  .header__menu--list {
+    height: 80px;
+    margin-right: 2em;
+  }
+
+  .header__menu--list--item {
+    display: inline-block;
+    margin: 0 .5em;
+    text-align: center;
+  }
+}
+
+.header__menu--list--item a {
+  text-decoration: none;
+  color: #fefefe;
+  width: 100%;
+  padding: 1.5em;
+  display: block;
+}
+
+@media only screen and (min-width:48em) {
+  .header__menu--list--item a {
+    padding: 0 .5em;
+  }
+}

@@ -1,3 +1,8 @@
-//Este es el archivo principal de Stilos,'preferiblemente
+//Este es el archivo principal de Estilos,'preferiblemente
 //con archivos para cada bloque o archivo html e importarlo
 //con @import
+@import './vendors/reset.css';
+@import './variables/var';
+@import './variables/customs';
+@import './mixins/breakpoints';
+@import './partials/header';
