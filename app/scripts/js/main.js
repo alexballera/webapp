@@ -6,14 +6,21 @@
   document.addEventListener('DOMContentLoaded', onDOMLoad)
 
   function onDOMLoad () {
-    // Variables Globales
+/**
+ * Variables Globales
+ */
     var btnMenu = document.getElementById('btnMenu')
     var navbarMenu = document.getElementById('navbarMenu')
+    var headerElem = document.querySelector('header')
 
-    // Menú
+/**
+ * Menú
+ */
     btnMenu.addEventListener('click', onClickMenu)
 
-    // Load CSS
+/**
+ * Load CSS
+ */
     var url = [
       'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.css',
       'https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css',

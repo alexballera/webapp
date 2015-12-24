@@ -1,0 +1,26 @@
+.content{
+  &__text{
+    &--image{
+      @include respond-to(md) {
+        display: flex;
+      }
+      picture{
+        margin: 0 auto;
+        @include respond-to(md) {
+          margin: 1em;
+          order: 1;
+          width: 40%;
+        }
+        img{
+          width: 100%;
+        }
+      }
+      p{
+        @include respond-to(md) {
+          order: 2;
+          width: 60%;
+        }
+      }
+    }
+  }
+}
