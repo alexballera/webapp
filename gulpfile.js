@@ -19,13 +19,55 @@ var inject = require('gulp-inject')
 var wiredep = require('wiredep').stream
 var install = require('gulp-install')
 
+// Variables
+var globs = {
+  build: './build',
+  dist: './dist',
+  html: {
+    main: './build/index.html',
+    watch: './build/**/*.html',
+    build: './build',
+    dist: './dist'
+  },
+  styles: {
+    main: './build/styles/scss/style.scss',
+    watch: './build/styles/scss/**/*.scss',
+    build: './build/styles',
+    dist: './dist/styles'
+  },
+  scripts: {
+    main: './build/scripts/js/main.js',
+    watch: './build/scripts/**/*.js',
+    build: './build/scripts',
+    dist: './dist/scripts'
+  },
+  images: {
+    main: './build/images/resources/**',
+    watch: './build/images/**/*.*',
+    build: './build/images',
+    dist: './dist/images'
+  },
+  videos: {
+    main: './build/videos/**',
+    watch: './build/videos/**/*.*',
+    build: './build/videos',
+    dist: './dist/videos'
+  },
+  fonts: {
+    main: './build/styles/fonts/**',
+    watch: './build/styles/fonts/**/*.*',
+    build: './build/styles/fonts',
+    dist: './dist/styles/fonts'
+  }
+}
+
 // Servidor - Browsersync
 gulp.task('serve', function () {
   browserSync.init({
     notify: false,
     logPrefix: 'BS',
     server: {
-      baseDir: [globs.app]
+      baseDir: [globs.build]
     },
     host: '0.0.0.0',
     port: 8080,
@@ -35,49 +77,6 @@ gulp.task('serve', function () {
     browser: ['google-chrome']
   })
 })
-
-// Variables
-var globs = {
-  app: './app',
-  dist: './dist',
-  html: {
-    main: './app/index.html',
-    watch: './app/**/*.html',
-    app: './app',
-    dist: './dist'
-  },
-  styles: {
-    main: './app/styles/scss/style.scss',
-    watch: './app/styles/scss/**/*.scss',
-    app: './app/styles',
-    dist: './dist/styles'
-  },
-  scripts: {
-    main: './app/scripts/js/main.js',
-    watch: './app/scripts/**/*.js',
-    app: './app/scripts',
-    dist: './dist/scripts'
-  },
-  images: {
-    main: './app/images/resources/**',
-    watch: './app/images/**/*.*',
-    app: './app/images',
-    dist: './dist/images'
-  },
-  videos: {
-    main: './app/videos/**',
-    watch: './app/videos/**/*.*',
-    app: './app/videos',
-    dist: './dist/videos'
-  },
-  fonts: {
-    main: './app/fonts/**',
-    watch: './app/fonts/**/*.*',
-    app: './app/fonts',
-    dist: './dist/fonts'
-  }
-}
-
 // HTML minificado
 gulp.task('html', function () {
   var opts = {
@@ -97,20 +96,19 @@ gulp.task('build:styles', function () {
   return gulp.src(globs.styles.main)
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer('last 2 version'))
-    .pipe(gulp.dest(globs.styles.app))
+    .pipe(gulp.dest(globs.styles.build))
     .pipe(rename({ suffix: '.min' }))
     .pipe(minifycss())
-    .pipe(gulp.dest(globs.styles.app))
+    .pipe(gulp.dest(globs.styles.build))
 })
-
 // Optimiza styles.min.css
 gulp.task('uncss', function () {
-  return gulp.src(globs.styles.app + '/**.min.css')
+  return gulp.src(globs.styles.build + '/**.min.css')
     .pipe(uncss({
       html: ['index.html', globs.html.watch]
     }))
     .pipe(gulp.dest(globs.styles.dist))
-    .pipe(gulp.dest(globs.styles.app))
+    .pipe(gulp.dest(globs.styles.build))
 })
 
 // Scripts: todos los archivos JS concatenados en uno solo minificado
@@ -121,7 +119,7 @@ gulp.task('scripts', function () {
     .pipe(buffer())
     .pipe(uglify())
     .pipe(gulp.dest(globs.scripts.dist + '/js'))
-    .pipe(gulp.dest(globs.scripts.app + '/js'))
+    .pipe(gulp.dest(globs.scripts.build + '/js'))
 })
 
 // Images
@@ -136,11 +134,11 @@ gulp.task('build:images', ['copy:images'], function () {
       interlaced: true,
       use: [pngquant()]
     })))
-    .pipe(gulp.dest(globs.images.app))
+    .pipe(gulp.dest(globs.images.build))
     .pipe(gulp.dest(globs.images.dist))
 })
 gulp.task('copy:images', function () {
-  return gulp.src(globs.images.app + '/*.*')
+  return gulp.src(globs.images.build + '/*.*')
     .pipe(gulp.dest(globs.images.dist))
 })
 gulp.task('clean:images', function (cb) {
@@ -150,17 +148,17 @@ gulp.task('clean:images', function (cb) {
 // Inyectando css y js al index.html
 gulp.task('inject', function () {
   gulp.src(globs.html.main)
-    .pipe(inject(gulp.src([globs.styles.app + '/style.min.css', globs.scripts.app + '/vendors/*.js', globs.scripts.app + '/js/main.min.js'], {read: false}), {relative: true}))
-    .pipe(gulp.dest(globs.app))
+    .pipe(inject(gulp.src([globs.styles.build + '/style.min.css', globs.scripts.build + '/vendors/*.js', globs.scripts.build + '/js/main.min.js'], {read: false}), {relative: true}))
+    .pipe(gulp.dest(globs.build))
 })
 
 // Inyectando las librerias Bower
 gulp.task('wiredep', function () {
-  gulp.src('./app/*.html')
+  gulp.src('./build/*.html')
     .pipe(wiredep({
-      directory: './app/bower_components'
+      directory: './build/bower_components'
     }))
-    .pipe(gulp.dest('./app'))
+    .pipe(gulp.dest('./build'))
 })
 
 // Clean
@@ -176,9 +174,9 @@ gulp.task('install', function () {
 
 // Copy
 gulp.task('copy', function () {
-  gulp.src(['./app/bower_components/**'])
+  gulp.src(['./build/bower_components/**'])
     .pipe(gulp.dest('./dist/bower_components'))
-  gulp.src([globs.scripts.app + '/vendors/*.js'])
+  gulp.src([globs.scripts.build + '/vendors/*.js'])
     .pipe(gulp.dest(globs.scripts.dist + '/vendors/'))
   gulp.src(globs.html.watch)
     .pipe(gulp.dest('./'))
