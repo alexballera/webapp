@@ -1,5 +1,5 @@
 .header{
-  font-family: 'FontAwesome';
+  font-family: $font-awesome;
   background-color: $black;
   color: $white;
   height: $header-height;
@@ -15,9 +15,9 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    height: 80px;
     transition: all .3s ease;
-    line-height: 80px;
+    height: ($header-height + 1rem);
+    line-height: ($header-height + 1rem);
   }
   &__light{
     background-color: $white;

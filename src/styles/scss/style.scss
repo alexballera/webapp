@@ -4,9 +4,9 @@
 
 @import './fonts/css/font-awesome.min.css'; //Comentar si se está online
 @import './vendors/normalize.css'; //Comentar si se está online
-@import './reset/reset';
+@import './customs/reset';
 @import './variables/var';
-@import './variables/customs';
+@import './customs/customs';
 @import './mixins/breakpoints';
 @import './partials/header';
 @import './partials/content';

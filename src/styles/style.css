@@ -49,14 +49,14 @@ table {
 
 body {
   font-size: 16px;
-  font-family: 'FontAwesome'; }
+  font-family: "FontAwesome", sans-serif; }
 
 .header {
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome", sans-serif;
   background-color: #212121;
   color: #F1FFF9;
-  height: 64px;
-  line-height: 64px;
+  height: 4rem;
+  line-height: 4rem;
   position: fixed;
   top: 0;
   left: 0;
@@ -77,9 +77,9 @@ body {
       -webkit-justify-content: space-between;
           -ms-flex-pack: justify;
               justify-content: space-between;
-      height: 80px;
       transition: all .3s ease;
-      line-height: 80px; } }
+      height: 5rem;
+      line-height: 5rem; } }
   .header__light {
     background-color: #F1FFF9;
     color: #212121; }
@@ -90,7 +90,7 @@ body {
     -webkit-justify-content: space-between;
         -ms-flex-pack: justify;
             justify-content: space-between;
-    height: 64px; }
+    height: 4rem; }
     .header__mobile--logo {
       margin-left: 1em;
       font-size: 2em;
@@ -101,7 +101,7 @@ body {
       border: 0;
       margin-right: 2em;
       outline: none;
-      height: 64px;
+      height: 4rem;
       -webkit-order: 2;
           -ms-flex-order: 2;
               order: 2;
@@ -173,7 +173,7 @@ body {
     .content__features--block--title {
       font-size: 1.2em;
       font-weight: 700;
-      font-family: 'FontAwesome';
+      font-family: "FontAwesome", sans-serif;
       padding: 1em 0; }
 
 @media only screen and (min-width: 48em) {
