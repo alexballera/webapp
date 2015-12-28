@@ -214,7 +214,7 @@ gulp.task('server', ['install'], function () {
 
 // Build
 gulp.task('build', ['copy'], function () {
-  gulp.start('build:html', 'build:scripts', 'build:images', 'inject', 'wiredep', 'build:styles', reload)
+  gulp.start('build:html', 'build:scripts', 'build:images', 'inject', 'wiredep', 'build:styles')
 })
 
 // Default
