@@ -1,0 +1,42 @@
+// Variables
+$screen-xs: 30em;  // 480px
+$screen-sm: 37.5em;  // 600px 
+$screen-md: 48em;  // 768px 
+$screen-lg: 64em;  // 1024px
+$screen-xl: 80em;  // 1280px
+// Mixins
+@mixin respond-to($media) {
+  @if $media == xs {
+    @media only screen and (min-width: $screen-xs) { @content; }
+  }
+  @else if $media == sm {
+    @media only screen and (min-width: $screen-sm) { @content; }
+  }
+  @else if $media == md {
+    @media only screen and (min-width: $screen-md) { @content; }
+  }
+  @else if $media == lg {
+    @media only screen and (min-width: $screen-lg) { @content; }
+  }
+  @else if $media == xl {
+    @media only screen and (min-width: $screen-xl) { @content; }
+  }
+}
+
+// Dentro de la clase:
+// Uso de los Breakpoints
+// @include respond-to(xs) {
+//    Código de estilo (propiedad: valor;)
+//   }
+//   @include respond-to(sm) {
+//    Código de estilo (propiedad: valor;)
+//   }
+//   @include respond-to(md) {
+//    Código de estilo (propiedad: valor;)
+//   }
+//   @include respond-to(lg) {
+//    Código de estilo (propiedad: valor;)
+//   }
+//   @include respond-to(xl) {
+//    Código de estilo (propiedad: valor;)
+//   }
