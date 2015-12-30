@@ -9,19 +9,11 @@
   left: 0;
   width: 100%;
   z-index: 10;
-  transition: all .3s ease;
   @include respond-to(md) {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    transition: all .3s ease;
-    height: ($header-height + 1rem);
-    line-height: ($header-height + 1rem);
-  }
-  &__light{
-    background-color: $white;
-    color: $black;
   }
   &__mobile{
     display: flex;
@@ -29,17 +21,49 @@
     height: $header-height;
     &--logo{
       margin-left: 1em;
-      font-size: 2em;
+      margin-top: .12em;
+      font-size: 1.5em;
       order: 1;
+      &--picture{
+      height: 0;
+        & img{
+        border-radius: 50%;
+        width: 3rem;
+        border: .2rem solid $white;
+        transition: all 1.2s ease;
+        }
+        & img:hover{
+          transform: rotate(360deg);
+          transition: all 1.2s ease;
+          border: .2rem solid $orange;
+        }
+        & figcaption{
+          position: absolute;
+          top: 0;
+          margin-left: 2.75em;
+          color: $white;
+        }
+        & figcaption:hover{
+          color: $orange;
+        }
+      }
     }
     &--btn{
       border: 0;
-      margin-right: 2em;
+      margin-right: 1.5em;
       outline: none;
+      line-height: $header-height;
       height: $header-height;
+      width: $header-height;
+      font-size: 1.5em;
       order: 2;
       border-radius: 5px;
       background-color: $black;
+      border: 2px solid $black;
+      &:hover{
+        border: 2px solid $orange;
+        color: $orange;
+      }
       @include respond-to(md) {
         display: none;
       }
@@ -47,8 +71,8 @@
   }
   &__menu--navbar{
     background-color: $black;
-    &__light{
-      background-color: $white;
+    @include respond-to(mm) {
+      width: 150px;
     }
   }
   &__menu--list{
@@ -57,32 +81,42 @@
     list-style-type: none;
     transition: height .3s ease;
     @include respond-to(md) {
-      height: 80px;
+      height: $header-height;
       margin-right: 2em;
     }
     &--show{
-      height: 320px;
+      height: 100%;
       transition: height .3s ease;
     }
     &--item{
       @include respond-to(md) {
         display: inline-block;
-        margin: 0 .5em;
+        margin: 0;
         text-align: center;
+        min-width: 90px;
       }
       & a{
         text-decoration: none;
         color: $white;
         width: 100%;
-        padding: 1.5em;
         display: block;
+        text-align: center;
+        box-sizing: border-box;
+        border-top: 3px solid $black;
         @include respond-to(md) {
+          box-sizing: border-box;
           padding: 0 .5em;
         }
-      }
-      &__light a{
-        color: $black;
-      }
+        &:hover{
+          box-sizing: border-box;
+          color: $orange;
+          border-top: 3px solid $orange;
+          @include respond-to(mm) {
+            border-top: 3px solid  grey;
+            background-color: grey;
+          }
+        }
     }
   }
+}
 }

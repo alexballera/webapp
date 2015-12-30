@@ -49,10 +49,10 @@ table {
 
 body {
   font-size: 16px;
-  font-family: "FontAwesome", sans-serif; }
+  font-family: "FontAwesome", Arial, sans-serif; }
 
 .header {
-  font-family: "FontAwesome", sans-serif;
+  font-family: "FontAwesome", Arial, sans-serif;
   background-color: #212121;
   color: #F1FFF9;
   height: 4rem;
@@ -61,8 +61,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 10;
-  transition: all .3s ease; }
+  z-index: 10; }
   @media only screen and (min-width: 48em) {
     .header {
       display: -webkit-flex;
@@ -76,13 +75,7 @@ body {
               flex-wrap: wrap;
       -webkit-justify-content: space-between;
           -ms-flex-pack: justify;
-              justify-content: space-between;
-      transition: all .3s ease;
-      height: 5rem;
-      line-height: 5rem; } }
-  .header__light {
-    background-color: #F1FFF9;
-    color: #212121; }
+              justify-content: space-between; } }
   .header__mobile {
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -93,27 +86,55 @@ body {
     height: 4rem; }
     .header__mobile--logo {
       margin-left: 1em;
-      font-size: 2em;
+      margin-top: .12em;
+      font-size: 1.5em;
       -webkit-order: 1;
           -ms-flex-order: 1;
               order: 1; }
+      .header__mobile--logo--picture {
+        height: 0; }
+        .header__mobile--logo--picture img {
+          border-radius: 50%;
+          width: 3rem;
+          border: 0.2rem solid #F1FFF9;
+          transition: all 1.2s ease; }
+        .header__mobile--logo--picture img:hover {
+          -webkit-transform: rotate(360deg);
+                  transform: rotate(360deg);
+          transition: all 1.2s ease;
+          border: 0.2rem solid #FFB040; }
+        .header__mobile--logo--picture figcaption {
+          position: absolute;
+          top: 0;
+          margin-left: 2.75em;
+          color: #F1FFF9; }
+        .header__mobile--logo--picture figcaption:hover {
+          color: #FFB040; }
     .header__mobile--btn {
       border: 0;
-      margin-right: 2em;
+      margin-right: 1.5em;
       outline: none;
+      line-height: 4rem;
       height: 4rem;
+      width: 4rem;
+      font-size: 1.5em;
       -webkit-order: 2;
           -ms-flex-order: 2;
               order: 2;
       border-radius: 5px;
-      background-color: #212121; }
+      background-color: #212121;
+      border: 2px solid #212121; }
+      .header__mobile--btn:hover {
+        border: 2px solid #FFB040;
+        color: #FFB040; }
       @media only screen and (min-width: 48em) {
         .header__mobile--btn {
           display: none; } }
   .header__menu--navbar {
     background-color: #212121; }
-    .header__menu--navbar__light {
-      background-color: #F1FFF9; }
+    @media only screen and (max-width: 48em) {
+      .header__menu--navbar {
+        width: 150px; } }
   .header__menu--list {
     height: 0;
     overflow: hidden;
@@ -121,104 +142,39 @@ body {
     transition: height .3s ease; }
     @media only screen and (min-width: 48em) {
       .header__menu--list {
-        height: 80px;
+        height: 4rem;
         margin-right: 2em; } }
     .header__menu--list--show {
-      height: 320px;
+      height: 100%;
       transition: height .3s ease; }
     @media only screen and (min-width: 48em) {
       .header__menu--list--item {
         display: inline-block;
-        margin: 0 .5em;
-        text-align: center; } }
+        margin: 0;
+        text-align: center;
+        min-width: 90px; } }
     .header__menu--list--item a {
       text-decoration: none;
       color: #F1FFF9;
       width: 100%;
-      padding: 1.5em;
-      display: block; }
+      display: block;
+      text-align: center;
+      box-sizing: border-box;
+      border-top: 3px solid #212121; }
       @media only screen and (min-width: 48em) {
         .header__menu--list--item a {
+          box-sizing: border-box;
           padding: 0 .5em; } }
-    .header__menu--list--item__light a {
-      color: #212121; }
+      .header__menu--list--item a:hover {
+        box-sizing: border-box;
+        color: #FFB040;
+        border-top: 3px solid #FFB040; }
+        @media only screen and (max-width: 48em) {
+          .header__menu--list--item a:hover {
+            border-top: 3px solid  grey;
+            background-color: grey; } }
 
 .content {
-  margin-top: 64px; }
-  @media only screen and (min-width: 48em) {
-    .content {
-      margin-top: 80px; } }
-  @media only screen and (min-width: 48em) {
-    .content__features {
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-justify-content: space-between;
-          -ms-flex-pack: justify;
-              justify-content: space-between; } }
-  .content__features--block {
-    padding: 1em;
-    border-left: 6px solid #dedede;
-    border-bottom: 1px solid #dedede; }
-    .content__features--block:hover {
-      background-color: #dedede; }
-    .content__features--block:nth-child(1) {
-      border-left-color: #FD0303; }
-    .content__features--block:nth-child(2) {
-      border-left-color: #59FB07; }
-    .content__features--block:nth-child(3) {
-      border-left-color: #FF7400; }
-    .content__features--block:nth-child(4) {
-      border-left-color: #032EFF; }
-    .content__features--block--title {
-      font-size: 1.2em;
-      font-weight: 700;
-      font-family: "FontAwesome", sans-serif;
-      padding: 1em 0; }
-
-@media only screen and (min-width: 48em) {
-  .container {
-    width: 48em;
-    margin: 0 auto; } }
-
-.video-container {
-  position: relative;
-  padding-bottom: 56.25%;
-  padding-top: 30px;
-  height: 0;
-  overflow: hidden; }
-
-video,
-iframe,
-object,
-embed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%; }
-
-@media only screen and (min-width: 48em) {
-  .content__text--image {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex; } }
-
-.content__text--image picture {
-  margin: 0 auto; }
-  @media only screen and (min-width: 48em) {
-    .content__text--image picture {
-      margin: 1em;
-      -webkit-order: 1;
-          -ms-flex-order: 1;
-              order: 1;
-      width: 40%; } }
-  .content__text--image picture img {
-    width: 100%; }
-
-@media only screen and (min-width: 48em) {
-  .content__text--image p {
-    -webkit-order: 2;
-        -ms-flex-order: 2;
-            order: 2;
-    width: 60%; } }
+  margin-top: 4rem;
+  height: 595px;
+  background-color: #9780B2; }

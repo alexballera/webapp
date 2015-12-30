@@ -15,6 +15,9 @@ $screen-xl: 80em;  // 1280px
   @else if $media == md {
     @media only screen and (min-width: $screen-md) { @content; }
   }
+  @else if $media == mm {
+    @media only screen and (max-width: $screen-md) { @content; }
+  }
   @else if $media == lg {
     @media only screen and (min-width: $screen-lg) { @content; }
   }
